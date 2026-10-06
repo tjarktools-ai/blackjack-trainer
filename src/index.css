@@ -723,10 +723,38 @@ p {
   --c2: #0e161c;
   color: #fff;
 }
-.chip.c500 {
-  --c: #a66bff;
-  --c2: #6a35c4;
-  color: #fff;
+/* Halbieren / Verdoppeln: sitzt als Doppel-Button am Ende der Chip-Reihe (dort, wo früher die 500 lag) */
+.bet-scale {
+  display: flex;
+  flex: none;
+  width: 96px;
+  height: 56px;
+  border-radius: 28px;
+  overflow: hidden;
+  background: var(--panel-2);
+  border: 2px solid var(--line);
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.45);
+}
+
+.bet-scale button {
+  flex: 1;
+  font-weight: 900;
+  font-size: 18px;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.bet-scale button + button {
+  border-left: 1px solid var(--line);
+  color: var(--green);
+}
+
+.bet-scale button:active:not(:disabled) {
+  background: var(--green-soft);
+}
+
+.bet-scale button:disabled {
+  opacity: 0.35;
 }
 
 .btn {
@@ -1652,6 +1680,14 @@ ul.plain {
     height: 48px;
     font-size: 14px;
   }
+  .bet-scale {
+    width: 86px;
+    height: 48px;
+    border-radius: 24px;
+  }
+  .bet-scale button {
+    font-size: 16px;
+  }
   .btn.primary {
     padding: 12px 16px;
   }
@@ -1727,6 +1763,14 @@ ul.plain {
     width: 42px;
     height: 42px;
     font-size: 12px;
+  }
+  .bet-scale {
+    width: 78px;
+    height: 42px;
+    border-radius: 21px;
+  }
+  .bet-scale button {
+    font-size: 15px;
   }
   .bet-display b {
     font-size: 18px;

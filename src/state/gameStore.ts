@@ -6,6 +6,7 @@ import type { Action } from '../engine/types'
 import { explain, type Explanation } from '../explain/explain'
 import { PRINCIPLES, type PrincipleId } from '../explain/principles'
 import { play } from '../ui/sound'
+import { canDoubleBet, canHalveBet, doubledBet, halvedBet } from './betMath'
 import { pickLearningDeal } from './learnDeal'
 import { useSettings } from './settingsStore'
 import { loadJson, saveJson } from './storage'
@@ -50,6 +51,8 @@ interface GameStore {
   clearBet: () => void
   undoBet: () => void
   setBet: (amount: number) => void
+  doubleBet: () => void
+  halveBet: () => void
   deal: () => Promise<void>
   act: (action: Action) => void
   insurance: (take: boolean) => void
@@ -179,7 +182,7 @@ export const useGame = create<GameStore>((set, get) => {
     },
     setBet: (amount) => {
       betStack.length = 0
-      const v = Math.max(0, Math.min(amount, MAX_BET, game.balance))
+      const v = Math.max(0, Math.min(Math.floor(amount), MAX_BET, Math.floor(game.balance)))
       // Stapel aus Chips nachbauen, damit „Zurück“ weiter funktioniert
       let rest = v
       for (const chip of [...CHIP_VALUES].reverse()) {
@@ -189,6 +192,20 @@ export const useGame = create<GameStore>((set, get) => {
         }
       }
       set({ bet: v })
+    },
+    doubleBet: () => {
+      const { bet, snap } = get()
+      if (snap.phase !== 'betting' && snap.phase !== 'settled') return
+      if (!canDoubleBet(bet, game.balance)) return
+      sound('chip')
+      get().setBet(doubledBet(bet, game.balance))
+    },
+    halveBet: () => {
+      const { bet, snap } = get()
+      if (snap.phase !== 'betting' && snap.phase !== 'settled') return
+      if (!canHalveBet(bet)) return
+      sound('chip')
+      get().setBet(halvedBet(bet))
     },
 
     deal: async () => {

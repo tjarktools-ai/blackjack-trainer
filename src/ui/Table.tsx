@@ -3,6 +3,7 @@ import { handValue } from '../engine/hand'
 import type { PlayerHand, RoundSnapshot } from '../engine/round'
 import { CHIP_VALUES, MAX_BET, MIN_BET } from '../engine/rules'
 import type { Action } from '../engine/types'
+import { canDoubleBet, canHalveBet } from '../state/betMath'
 import { CardBack, CardView } from './Cards'
 import { fmtMoney, fmtSigned, resultTag, totalLabel } from './cardUtils'
 
@@ -19,6 +20,8 @@ export interface TableController {
   undoBet: () => void
   clearBet: () => void
   setBet: (amount: number) => void
+  doubleBet: () => void
+  halveBet: () => void
   deal: () => Promise<void>
   act: (action: Action) => void
   insurance: (take: boolean) => void
@@ -176,7 +179,7 @@ export interface BrokeAction {
 }
 
 function BetPanel({ ctl, broke }: { ctl: TableController; broke: BrokeAction }) {
-  const { bet, snap, busy, addBet, undoBet, clearBet, setBet, deal, lastBet } = ctl
+  const { bet, snap, busy, addBet, undoBet, clearBet, setBet, doubleBet, halveBet, deal, lastBet } = ctl
   const free = Math.min(MAX_BET, snap.balance) - bet
   if (snap.balance < MIN_BET && bet === 0) {
     return (
@@ -211,6 +214,15 @@ function BetPanel({ ctl, broke }: { ctl: TableController; broke: BrokeAction }) 
         {CHIP_VALUES.map((v) => (
           <Chip key={v} value={v} disabled={busy || v > free} onClick={() => addBet(v)} />
         ))}
+        {/* Am Ende der Reihe: Einsatz halbieren / verdoppeln */}
+        <div className="bet-scale" role="group" aria-label="Einsatz halbieren oder verdoppeln">
+          <button disabled={busy || !canHalveBet(bet)} onClick={halveBet} aria-label="Einsatz halbieren">
+            ½
+          </button>
+          <button disabled={busy || !canDoubleBet(bet, snap.balance)} onClick={doubleBet} aria-label="Einsatz verdoppeln">
+            ×2
+          </button>
+        </div>
       </div>
       <button className="btn primary" disabled={busy || bet < MIN_BET || bet > snap.balance} onClick={() => void deal()}>
         {snap.phase === 'settled' ? 'Nächste Runde' : 'Austeilen'}

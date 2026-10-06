@@ -5,7 +5,8 @@ Mobile-first PWA: Du spielst Blackjack mit Spielgeld wie an einem echten Tisch u
 
 ## Funktionen
 
-- **Spiel im Stake-Look** (dunkel + Neon-Grün): Chips setzen, Hit / Stand / Double / Split / Surrender, Insurance.
+- **Spiel im Stake-Look** (dunkel + Neon-Grün): Chips setzen (1 · 5 · 25 · 100, dazu ein Doppel-Button **½ | ×2**,
+  der den aktuellen Einsatz halbiert bzw. verdoppelt), Hit / Stand / Double / Split / Surrender, Insurance.
 - **Realistische Regeln** (exakt passend zur Tabelle): 6 Decks, Dealer zieht auf Soft 17 (H17), Dealer-Peek,
   Blackjack 3:2, Double After Split, Late Surrender, Split bis 4 Hände, Asse nur 1 Karte.
   Schuh mit echtem Zufall (`crypto.getRandomValues`, Fisher-Yates) und Cut Card bei ca. 75 %.

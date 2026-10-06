@@ -78,6 +78,31 @@ describe('Spaß-Modus', () => {
     expect(useFun.getState().phase).toBe('setup')
   })
 
+  it('Einsatz lässt sich mit den Tasten ×2 und ½ ändern', () => {
+    useFun.getState().startSession(1000) // Start-Einsatz ≈ 2 % → 10
+    expect(useFun.getState().bet).toBe(10)
+    useFun.getState().doubleBet()
+    expect(useFun.getState().bet).toBe(20)
+    useFun.getState().doubleBet()
+    expect(useFun.getState().bet).toBe(40)
+    useFun.getState().halveBet()
+    useFun.getState().halveBet()
+    expect(useFun.getState().bet).toBe(10)
+    // „Zurück“ funktioniert danach weiter mit dem neu aufgebauten Chip-Stapel (10 = 5+5 → 5)
+    useFun.getState().undoBet()
+    expect(useFun.getState().bet).toBe(5)
+    // nie mehr als das Budget
+    useFun.getState().setBet(900)
+    useFun.getState().doubleBet()
+    expect(useFun.getState().bet).toBe(1000)
+    useFun.getState().doubleBet()
+    expect(useFun.getState().bet).toBe(1000)
+    // Halbieren stoppt bei 1
+    useFun.getState().setBet(1)
+    useFun.getState().halveBet()
+    expect(useFun.getState().bet).toBe(1)
+  })
+
   it('Hinweise lassen sich ausschalten', async () => {
     useFun.getState().setHintMode('off')
     useFun.getState().startSession(1000)

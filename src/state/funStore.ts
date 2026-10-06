@@ -5,6 +5,7 @@ import type { Action } from '../engine/types'
 import { briefExplanation, type Brief } from '../explain/brief'
 import { explain } from '../explain/explain'
 import { play } from '../ui/sound'
+import { canDoubleBet, canHalveBet, doubledBet, halvedBet } from './betMath'
 import { useSettings } from './settingsStore'
 import { loadJson, saveJson } from './storage'
 
@@ -72,6 +73,8 @@ interface FunStore {
   undoBet: () => void
   clearBet: () => void
   setBet: (amount: number) => void
+  doubleBet: () => void
+  halveBet: () => void
   deal: () => Promise<void>
   act: (action: Action) => void
   insurance: (take: boolean) => void
@@ -231,6 +234,20 @@ export const useFun = create<FunStore>((set, get) => {
         }
       }
       set({ bet: v })
+    },
+    doubleBet: () => {
+      const { bet, snap } = get()
+      if (snap.phase !== 'betting' && snap.phase !== 'settled') return
+      if (!canDoubleBet(bet, game.balance)) return
+      sound('chip')
+      get().setBet(doubledBet(bet, game.balance))
+    },
+    halveBet: () => {
+      const { bet, snap } = get()
+      if (snap.phase !== 'betting' && snap.phase !== 'settled') return
+      if (!canHalveBet(bet)) return
+      sound('chip')
+      get().setBet(halvedBet(bet))
     },
 
     deal: async () => {

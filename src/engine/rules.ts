@@ -25,4 +25,5 @@ export const RULES = {
 export const MIN_BET = 1
 export const MAX_BET = 5000
 export const START_BALANCE = 10000
-export const CHIP_VALUES = [1, 5, 25, 100, 500] as const
+/** Chips zum Setzen; größere Einsätze entstehen über „×2“ (und „½“). */
+export const CHIP_VALUES = [1, 5, 25, 100] as const

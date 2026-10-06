@@ -88,7 +88,7 @@ export function SettingsScreen() {
             <li>Double auf jede 2-Karten-Hand, auch nach Split (DAS)</li>
             <li>Split bis zu 4 Hände · Asse: nur eine Karte, kein Resplit</li>
             <li>Late Surrender nur als erste Entscheidung</li>
-            <li>Chips: 1 · 5 · 25 · 100 · 500, Einsatz {fmtMoney(1)}–{fmtMoney(5000)}</li>
+            <li>Chips: 1 · 5 · 25 · 100, dazu ½ und ×2 für den Einsatz · Einsatz {fmtMoney(1)}–{fmtMoney(5000)}</li>
           </ul>
           <p className="caption">
             Die Strategie folgt exakt deiner Tabelle. Die Zahlen („Erwartungswert“) sind mit einem exakten Rechenmodell für genau diese Regeln berechnet; eine Simulation mit 30 Mio. Runden ergab einen Hausvorteil von 0,56 % (± 0,04 %) bei perfekter Strategie – wie am echten Tisch.
