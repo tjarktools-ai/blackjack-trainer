@@ -66,14 +66,22 @@ p {
 }
 
 /* ---------- App-Rahmen ---------- */
+/*
+ * Fest am Bildschirm verankert statt 100dvh: In installierten iPhone-Apps (Home-Bildschirm) lässt 100dvh
+ * unten einen leeren Streifen, die Navigation sitzt dann zu hoch und dem Tisch fehlt Platz.
+ */
 .app {
-  height: 100dvh;
-  display: flex;
-  flex-direction: column;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   max-width: 560px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
   background: var(--bg);
-  position: relative;
   overflow: hidden;
 }
 
@@ -173,13 +181,13 @@ p {
 }
 
 /* ---------- Spieltisch ---------- */
+/* Der Tisch passt seine Kartengröße an die verfügbare Höhe an (iPhone mit Statusleiste, Hinweisleiste usw.). */
 .table {
   flex: 1;
   min-height: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 10px 10px 8px;
+  container-type: size;
+  --table-overhead: 160px;
+  padding: 0;
   background:
     radial-gradient(ellipse at 50% 38%, rgba(0, 231, 1, 0.1), transparent 62%),
     linear-gradient(var(--bg), var(--bg-2));
@@ -395,8 +403,30 @@ p {
   }
 }
 
+.table.with-extra {
+  --table-overhead: 240px;
+}
+
+.table-inner {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px 10px 8px;
+  overflow: hidden;
+  /* Kartenbreite: (Höhe − feste Anteile) / 2,8 Kartenhöhen, begrenzt auf 34–66 px */
+  --cw-base: clamp(34px, calc((100cqh - var(--table-overhead)) / 2.8), 66px);
+}
+
+@supports not (height: 1cqh) {
+  .table-inner {
+    --cw-base: 52px;
+  }
+}
+
 .table-center {
-  min-height: 46px;
+  min-height: 34px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -458,14 +488,14 @@ p {
 
 .fun-hint {
   flex: none;
-  min-height: 66px;
+  min-height: 58px;
   display: flex;
   align-items: center;
-  padding: 8px 14px;
+  padding: 6px 12px;
   background: var(--bg-2);
   border-top: 1px solid var(--line);
   border-left: 4px solid var(--line);
-  font-size: 13px;
+  font-size: 12.5px;
   line-height: 1.35;
 }
 
@@ -573,15 +603,19 @@ p {
 }
 
 .shoe {
+  position: absolute;
+  top: 8px;
+  right: 12px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 11px;
+  gap: 6px;
+  font-size: 10.5px;
   color: var(--muted);
+  z-index: 1;
 }
 
 .shoe .bar {
-  width: 70px;
+  width: 44px;
   height: 5px;
   border-radius: 3px;
   background: var(--panel-2);
@@ -1607,15 +1641,114 @@ ul.plain {
   font-size: 14px;
 }
 
-@media (max-height: 700px) {
+@media (max-height: 860px) {
   .controls {
-    min-height: 130px;
     padding: 8px 10px;
+    gap: 8px;
+    min-height: 0;
   }
   .chip {
-    width: 50px;
-    height: 50px;
-    font-size: 13px;
+    width: 48px;
+    height: 48px;
+    font-size: 14px;
+  }
+  .btn.primary {
+    padding: 12px 16px;
+  }
+  .bet-display b {
+    font-size: 21px;
+  }
+  .nav button {
+    padding: 7px 4px 6px;
+  }
+  .topbar {
+    padding-bottom: 7px;
+  }
+}
+
+/* Sehr kurze Bildschirme (kleine Android-Geräte, iPhone SE, Querformat): alles kompakter */
+@media (max-height: 700px) {
+  .table {
+    --table-overhead: 120px;
+  }
+  .table.with-extra {
+    --table-overhead: 190px;
+  }
+  .table-inner {
+    padding: 6px 8px 4px;
+    --cw-base: clamp(28px, calc((100cqh - var(--table-overhead)) / 2.8), 66px);
+  }
+  .zone {
+    gap: 3px;
+  }
+  .hand {
+    gap: 3px;
+    padding: 3px 4px 4px;
+  }
+  .hand-meta {
+    min-height: 18px;
+  }
+  .result-tag {
+    font-size: 11px;
+    padding: 1px 7px;
+  }
+  .table-center {
+    min-height: 24px;
+  }
+  .net-banner {
+    font-size: 18px;
+  }
+  .topbar {
+    padding: calc(var(--safe-top) + 6px) 14px 6px;
+  }
+  .balance b {
+    font-size: 17px;
+  }
+  .fun-bar {
+    padding: 4px 10px;
+  }
+  .fun-bar small {
+    font-size: 9.5px;
+  }
+  .fun-bar b {
+    font-size: 14px;
+  }
+  .fun-hint {
+    min-height: 48px;
+    padding: 4px 10px;
+    font-size: 12px;
+  }
+  .controls {
+    min-height: 0;
+    padding: 6px 10px;
+    gap: 6px;
+  }
+  .chip {
+    width: 42px;
+    height: 42px;
+    font-size: 12px;
+  }
+  .bet-display b {
+    font-size: 18px;
+  }
+  .btn.primary {
+    padding: 10px 14px;
+    font-size: 16px;
+  }
+  .actions .btn {
+    padding: 11px 6px;
+  }
+  .action-hint {
+    display: none;
+  }
+  .nav button {
+    font-size: 0;
+    gap: 0;
+    padding: 6px 4px;
+  }
+  .nav button svg {
+    width: 24px;
+    height: 24px;
   }
 }
 

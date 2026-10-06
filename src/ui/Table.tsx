@@ -24,12 +24,15 @@ export interface TableController {
   insurance: (take: boolean) => void
 }
 
-function cardWidth(handCount: number): number {
-  if (handCount <= 1) return 66
-  if (handCount === 2) return 56
-  if (handCount === 3) return 46
-  return 38
+/** Anteil der Basis-Kartenbreite (siehe .table-inner) je Anzahl Hände. */
+function cardScale(handCount: number): number {
+  if (handCount <= 1) return 1
+  if (handCount === 2) return 0.85
+  if (handCount === 3) return 0.7
+  return 0.58
 }
+
+const cw = (scale: number) => ({ ['--cw' as string]: `calc(var(--cw-base) * ${scale})` })
 
 function DealerZone({ snap }: { snap: RoundSnapshot }) {
   const { dealer, holeHidden } = snap
@@ -37,7 +40,7 @@ function DealerZone({ snap }: { snap: RoundSnapshot }) {
     return (
       <div className="zone">
         <div className="zone-label">Dealer</div>
-        <div className="cards" style={{ ['--cw' as string]: '66px' }} />
+        <div className="cards" style={cw(1)} />
       </div>
     )
   }
@@ -48,7 +51,7 @@ function DealerZone({ snap }: { snap: RoundSnapshot }) {
       <div className="zone-label">
         Dealer <span className={`total-badge ${label.kind}`}>{label.text}</span>
       </div>
-      <div className="cards" style={{ ['--cw' as string]: '66px' }}>
+      <div className="cards" style={cw(1)}>
         {dealer.map((c, i) =>
           i === 1 && holeHidden ? (
             <CardBack key="hole" delay={480} />
@@ -66,7 +69,7 @@ function HandView({ hand, active, count }: { hand: PlayerHand; active: boolean; 
   const tag = resultTag(hand)
   return (
     <div className={`hand${active ? ' active' : ''}`}>
-      <div className="cards" style={{ ['--cw' as string]: `${cardWidth(count)}px` }}>
+      <div className="cards" style={cw(cardScale(count))}>
         {hand.cards.map((c, i) => (
           <CardView key={c.id} card={c} delay={count === 1 && i === 1 ? 320 : 0} />
         ))}
@@ -88,7 +91,7 @@ function PlayerZone({ snap }: { snap: RoundSnapshot }) {
   if (snap.hands.length === 0) {
     return (
       <div className="zone">
-        <div className="cards" style={{ ['--cw' as string]: '66px' }} />
+        <div className="cards" style={cw(1)} />
         <div className="zone-label">Deine Hand</div>
       </div>
     )
@@ -105,7 +108,6 @@ function PlayerZone({ snap }: { snap: RoundSnapshot }) {
 }
 
 function CenterInfo({ snap, busy, extra }: { snap: RoundSnapshot; busy: boolean; extra?: ReactNode }) {
-  const shoePct = Math.round(snap.shoe.dealtFraction * 100)
   let content: ReactNode = null
   if (snap.phase === 'settled') {
     const n = snap.net
@@ -127,13 +129,20 @@ function CenterInfo({ snap, busy, extra }: { snap: RoundSnapshot; busy: boolean;
     <div className="table-center">
       {content}
       {(snap.phase === 'betting' || snap.phase === 'settled') && extra}
-      <div className="shoe" title="Cut Card bei ca. 75 %">
-        <span>Schuh</span>
-        <span className="bar">
-          <i style={{ width: `${shoePct}%` }} />
-        </span>
-        <span>{shoePct} %</span>
-      </div>
+    </div>
+  )
+}
+
+/** Schuh-Füllstand (oben rechts am Tisch, braucht keine Höhe). */
+function Shoe({ snap }: { snap: RoundSnapshot }) {
+  const shoePct = Math.round(snap.shoe.dealtFraction * 100)
+  return (
+    <div className="shoe" title="Cut Card bei ca. 75 %">
+      <span>Schuh</span>
+      <span className="bar">
+        <i style={{ width: `${shoePct}%` }} />
+      </span>
+      <span>{shoePct} %</span>
     </div>
   )
 }
@@ -141,10 +150,13 @@ function CenterInfo({ snap, busy, extra }: { snap: RoundSnapshot; busy: boolean;
 /** Dealer, Mitte (Status/Ergebnis/Schuh) und Spieler-Hände. */
 export function TableView({ ctl, centerExtra }: { ctl: TableController; centerExtra?: ReactNode }) {
   return (
-    <div className="table">
-      <DealerZone snap={ctl.snap} />
-      <CenterInfo snap={ctl.snap} busy={ctl.busy} extra={centerExtra} />
-      <PlayerZone snap={ctl.snap} />
+    <div className={`table${centerExtra && (ctl.snap.phase === 'betting' || ctl.snap.phase === 'settled') ? ' with-extra' : ''}`}>
+      <div className="table-inner">
+        <DealerZone snap={ctl.snap} />
+        <CenterInfo snap={ctl.snap} busy={ctl.busy} extra={centerExtra} />
+        <PlayerZone snap={ctl.snap} />
+      </div>
+      <Shoe snap={ctl.snap} />
     </div>
   )
 }
