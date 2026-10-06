@@ -1,5 +1,5 @@
 import type { DealerInfo, EvRow, Explanation } from '../explain/explain'
-import { fmtEv, actionName, upLabel } from '../explain/format'
+import { fmtEv, actionName, pct, upLabel } from '../explain/format'
 import { PRINCIPLES } from '../explain/principles'
 
 /** Balken der Erwartungswerte aller möglichen Züge. */
@@ -51,7 +51,7 @@ export function DealerBar({ info }: { info: DealerInfo }) {
         {segs.map((s) => (
           <div key={s.cls} className={s.cls === 'bust' ? 'bust' : ''}>
             <small>{s.label}</small>
-            <b>{Math.round(s.p * 100)} %</b>
+            <b>{pct(s.p)}</b>
           </div>
         ))}
       </div>
@@ -90,7 +90,7 @@ export function ExplanationBody({ x, showVerdict = true }: { x: Explanation; sho
           <h3>Was jeder Zug im Schnitt bringt</h3>
           <EvBars rows={x.evRows} chosenWrong={!x.correct} />
           <p className="caption">
-            Erwartungswert pro gesetzter Einheit (+0,10 = im Schnitt 10 % Gewinn, −0,50 = 50 % Verlust). Exakt berechnet für 6 Decks, H17, Double After Split, Late Surrender.
+            Durchschnittsergebnis pro Einsatz: +10 % = im Schnitt 10 Gewinn je 100 gesetzte, −50 % = 50 Verlust je 100. Exakt berechnet für 6 Decks, H17, Double After Split, Late Surrender.
           </p>
         </div>
       )}

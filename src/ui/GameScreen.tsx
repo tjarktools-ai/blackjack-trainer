@@ -3,6 +3,7 @@ import type { PlayerHand } from '../engine/round'
 import { CHIP_VALUES, MAX_BET, MIN_BET, START_BALANCE } from '../engine/rules'
 import type { Action } from '../engine/types'
 import { useGame } from '../state/gameStore'
+import { useSettings, type DealMode } from '../state/settingsStore'
 import { CardBack, CardView } from './Cards'
 import { fmtMoney, fmtSigned, resultTag, totalLabel } from './cardUtils'
 
@@ -89,6 +90,31 @@ function PlayerZone() {
   )
 }
 
+const MODES: { id: DealMode; label: string; hint: string }[] = [
+  { id: 'realistic', label: 'Realistisch', hint: 'Karten wie am echten Tisch' },
+  { id: 'learn', label: 'Lern-Deal', hint: 'Bevorzugt Felder, die du noch nicht kannst' },
+  { id: 'hard', label: 'Schwer', hint: 'Nur knappe, schwierige Entscheidungen' },
+]
+
+/** Umschalter zwischen realistischem Austeilen und Übungsmodi. */
+function ModeSwitch() {
+  const mode = useSettings((s) => s.dealMode)
+  const set = useSettings((s) => s.set)
+  const current = MODES.find((m) => m.id === mode)!
+  return (
+    <div className="mode-switch">
+      <div className="seg" role="radiogroup" aria-label="Austeil-Modus">
+        {MODES.map((m) => (
+          <button key={m.id} role="radio" aria-checked={mode === m.id} className={mode === m.id ? 'on' : ''} onClick={() => set('dealMode', m.id)}>
+            {m.label}
+          </button>
+        ))}
+      </div>
+      <span className="status-line">{current.hint}</span>
+    </div>
+  )
+}
+
 function CenterInfo() {
   const snap = useGame((s) => s.snap)
   const busy = useGame((s) => s.busy)
@@ -113,6 +139,7 @@ function CenterInfo() {
   return (
     <div className="table-center">
       {content}
+      {(snap.phase === 'betting' || snap.phase === 'settled') && <ModeSwitch />}
       <div className="shoe" title="Cut Card bei ca. 75 %">
         <span>Schuh</span>
         <span className="bar">

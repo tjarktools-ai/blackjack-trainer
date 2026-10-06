@@ -17,7 +17,11 @@ Mobile-first PWA: Du spielst Blackjack mit Spielgeld wie an einem echten Tisch u
 - **Lernbereich:** 18 Prinzipien hinter der Tabelle + die Tabelle selbst – jedes Feld antippen erklärt es.
 - **Fortschritt:** „Strategie beherrscht“ in % (284 Tabellenfelder), Trefferquote, Serie, Heatmap der Tabelle,
   Problemfelder, Quiz-Verständnis, Guthabenverlauf.
-- **Optionaler Lern-Deal:** verteilt gezielt Hände aus Feldern, die du noch nicht sicher kannst.
+- **Austeil-Modus** (umschaltbar direkt am Tisch): **Realistisch** (Karten wie am echten Tisch), **Lern-Deal**
+  (bevorzugt Felder, die du noch nicht sicher kannst) und **Schwer** (nur knappe Entscheidungen, z. B. Soft 18
+  gegen 2, 12 gegen 4, 16 gegen 10 – ein Feld gilt als schwer, wenn der Tabellenzug weniger als 8 % des Einsatzes
+  besser ist als die beste Alternative; aktuell 83 von 284 Feldern).
+- Alle Wahrscheinlichkeiten und Durchschnittsergebnisse werden als Prozent angezeigt (z. B. 33,3 %).
 - **PWA:** installierbar, läuft offline, Daten bleiben lokal (Backup per Export/Import).
 
 ## Die Strategie-Tabelle

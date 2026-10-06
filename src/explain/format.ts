@@ -3,21 +3,20 @@ import type { Action, Card, Rank, Upcard } from '../engine/types'
 
 export const P_TEN = 4 / 13
 
-/** 0,31 → "31 %" */
-export function pct(x: number, digits = 0): string {
+/** Wahrscheinlichkeit als Prozent mit einer Nachkommastelle: 0,3087 → "30,9 %" */
+export function pct(x: number, digits = 1): string {
   return `${(x * 100).toFixed(digits).replace('.', ',')} %`
 }
 
-/** EV mit Vorzeichen und deutschem Komma: +0,123 / −0,541 */
+/** Durchschnittsergebnis pro Einsatz in Prozent mit Vorzeichen: +0,123 → "+12,3 %", −0,541 → "−54,1 %" */
 export function fmtEv(x: number): string {
-  const s = Math.abs(x).toFixed(3).replace('.', ',')
-  return `${x < 0 ? '−' : '+'}${s}`
+  const s = (Math.abs(x) * 100).toFixed(1).replace('.', ',')
+  return `${x < 0 ? '−' : '+'}${s} %`
 }
 
-/** EV-Differenz als „pro 100 Einsatz“ */
+/** EV-Differenz in Prozent des Einsatzes: 0,0347 → "3,5 % vom Einsatz" */
 export function per100(x: number): string {
-  const v = Math.abs(x * 100)
-  return `${v.toFixed(v >= 10 ? 0 : 1).replace('.', ',')} pro 100 gesetzte Einheiten`
+  return `${(Math.abs(x) * 100).toFixed(1).replace('.', ',')} % vom Einsatz`
 }
 
 /** Wahrscheinlichkeit, mit der die nächste Karte (unendlich viele Decks) bustet. */

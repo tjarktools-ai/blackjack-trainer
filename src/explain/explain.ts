@@ -253,7 +253,7 @@ function whyHard(c: Ctx): { why: string[]; principle: PrincipleId } {
   if (ideal === 'double') {
     const winTotal = total + 10
     why.push(
-      `Mit Hard ${total} ist die nächste Karte in rund ${pct(4 / 13)} eine 10 und macht daraus ${winTotal}. Du startest in einer starken Position.`,
+      `Mit Hard ${total} ist die nächste Karte in ${pct(4 / 13)} eine 10 und macht daraus ${winTotal}. Du startest in einer starken Position.`,
     )
     why.push(
       `Der Dealer zeigt ${upLabel(up)} (${strength}, er bustet in ${bust} der Fälle). Als Favorit setzt du mehr Geld ein: ${evPair(c, 'double', 'hit') || 'Double ist am besten'}.`,
@@ -283,7 +283,7 @@ function whyHard(c: Ctx): { why: string[]; principle: PrincipleId } {
   if (total === 12) {
     if (ideal === 'hit' && (up === '2' || up === '3')) {
       why.push(
-        `Mit Hard 12 bustet ein Hit nur bei einer 10 – rund ${pct(hitBust)}. Das ist das niedrigste Bust-Risiko aller Stiff-Hände.`,
+        `Mit Hard 12 bustet ein Hit nur bei einer 10 – ${pct(hitBust)}. Das ist das niedrigste Bust-Risiko aller Stiff-Hände.`,
       )
       why.push(
         `Gegen ${up} bustet der Dealer aber nur in ${bust} der Fälle – zu selten, um mit der 12 zu stehen (${evPair(c, 'hit', 'stand')}). Ab der Dealer-4 (Bust ≈ ${pct(DEALER_STATS['4'].bust)}) lohnt sich Stehen.`,
@@ -373,16 +373,16 @@ function whySurrender(c: Ctx): { why: string[]; principle: PrincipleId } {
   const stand = evOf(c, 'stand')
   const hit = evOf(c, 'hit')
   why.push(
-    `Mit Hard ${total} gegen ${upLabel(up)} verliert jede Spielweise im Schnitt mehr als die Hälfte des Einsatzes: ${stand !== undefined && hit !== undefined ? `Stand ${fmtEv(stand)}, Hit ${fmtEv(hit)}` : 'Stand und Hit liegen unter −0,500'}.`,
+    `Mit Hard ${total} gegen ${upLabel(up)} verliert jede Spielweise im Schnitt mehr als die Hälfte des Einsatzes: ${stand !== undefined && hit !== undefined ? `Stand ${fmtEv(stand)}, Hit ${fmtEv(hit)}` : 'Stand und Hit liegen unter −50 %'}.`,
   )
-  why.push('Aufgeben (Late Surrender) kostet dich sicher −0,500 (halber Einsatz). Das ist hier besser als jede Alternative.')
+  why.push('Aufgeben (Late Surrender) kostet dich sicher −50 % (halber Einsatz). Das ist hier besser als jede Alternative.')
   why.push('Nach deiner Tabelle gilt das nur für 16 gegen 9, 10 und Ass sowie 15 gegen 10 – bei allen anderen Händen spielst du besser weiter, als aufzugeben.')
   return { why, principle: 'surrender' }
 }
 
 const PAIR_REASON: Record<string, (c: Ctx, split: boolean) => string> = {
   'A,A': () =>
-    'Als Hand (Soft 12) sind zwei Asse schwach – aber ein einzelnes Ass ist der beste Starter, den es gibt: Mit jeder 10 (rund 31 %) wird daraus 21. Du machst aus einer schlechten Hand zwei starke. Gesplittete Asse bekommen nur je eine Karte; 21 zählt dann nicht als Blackjack – trotzdem ist Split gegen jede Karte am besten.',
+    'Als Hand (Soft 12) sind zwei Asse schwach – aber ein einzelnes Ass ist der beste Starter, den es gibt: Mit jeder 10 (30,8 %) wird daraus 21. Du machst aus einer schlechten Hand zwei starke. Gesplittete Asse bekommen nur je eine Karte; 21 zählt dann nicht als Blackjack – trotzdem ist Split gegen jede Karte am besten.',
   '8,8': (c) =>
     `16 ist die schlechteste Hand im Blackjack. Zwei Hände, die mit einer 8 starten, sind deutlich besser – mit einer 3 oder 2 werden daraus 11 bzw. 10 und du kannst verdoppeln.${c.stats.strength === 'stark' ? ` Selbst gegen ${upLabel(c.up)} verlierst du mit Split weniger als mit Hit oder Stand.` : ' Gegen schwache Dealer-Karten profitierst du außerdem doppelt vom Dealer-Bust.'}`,
   'T,T': () =>
@@ -396,10 +396,10 @@ const PAIR_REASON: Record<string, (c: Ctx, split: boolean) => string> = {
   '9,9': (c, split) => {
     if (split) {
       if (c.up === '8') {
-        return `Gegen die 8 endet der Dealer oft genau auf 18 (${pct(c.stats.totals[1])}) – deine feste 18 bringt dann nur einen Push. Zwei Hände, die mit einer 9 starten, werden mit einer 10 (rund 31 %) zur 19 und schlagen die 18.`
+        return `Gegen die 8 endet der Dealer oft genau auf 18 (${pct(c.stats.totals[1])}) – deine feste 18 bringt dann nur einen Push. Zwei Hände, die mit einer 9 starten, werden mit einer 10 (30,8 %) zur 19 und schlagen die 18.`
       }
       if (c.up === '9') {
-        return `Gegen die 9 endet der Dealer oft auf 19 (${pct(c.stats.totals[2])}) – deine feste 18 verliert dann. Zwei Hände, die mit einer 9 starten, haben je mit einer 10 (rund 31 %) die Chance auf eine 19 und mit einem Ass auf eine Soft 20.`
+        return `Gegen die 9 endet der Dealer oft auf 19 (${pct(c.stats.totals[2])}) – deine feste 18 verliert dann. Zwei Hände, die mit einer 9 starten, haben je mit einer 10 (30,8 %) die Chance auf eine 19 und mit einem Ass auf eine Soft 20.`
       }
       return `Gegen ${upLabel(c.up)} (Bust ${pct(c.stats.bust)}) holst du mit zwei Händen, die mit einer 9 starten, mehr heraus als mit einer festen 18 – du nutzt den Dealer-Bust doppelt.`
     }
@@ -493,10 +493,10 @@ function whyNot(e: PlayEvaluation, c: Ctx): string {
       parts.push('Zwei Hände gleichzeitig zu spielen verdoppelt dein Risiko. Gegen diese Dealer-Karte bringt das weniger als eine Hand zu spielen.')
       break
     case 'surrender':
-      parts.push('Aufgeben wirft sicher die Hälfte des Einsatzes weg. Hier ist die Hand besser spielbar als −0,500.')
+      parts.push('Aufgeben wirft sicher die Hälfte des Einsatzes weg. Hier ist die Hand besser spielbar als −50 %.')
       break
   }
-  if (rec === 'surrender') parts.push('Hit und Stand liegen hier beide unter −0,500 – deshalb ist Aufgeben die billigste Lösung.')
+  if (rec === 'surrender') parts.push('Hit und Stand liegen hier beide unter −50 % – deshalb ist Aufgeben die billigste Lösung.')
   if (rec === 'split' && chosen !== 'split') parts.push('Gerade bei diesem Paar ist die Hand als Ganzes schwächer als zwei einzelne Starter.')
   return parts.join(' ')
 }
@@ -516,14 +516,14 @@ export function explainInsurance(e: InsuranceEvaluation): InsuranceExplanation {
       'Even Money ist dieselbe Wette wie Insurance: Du tauschst deinen Blackjack (3:2) gegen sichere 1:1, wenn der Dealer ein Ass zeigt.',
     )
     why.push(
-      `Lehnst du ab, bekommst du in ${pct(1 - pBj, 1)} der Fälle 3:2 (= 1,5) und in ${pct(pBj, 1)} einen Push (= 0). Im Schnitt: ${fmtEv((1 - pBj) * 1.5).replace('+', '')} gegen sichere 1,000 bei Even Money. Ablehnen ist besser.`,
+      `Lehnst du ab, bekommst du in ${pct(1 - pBj, 1)} der Fälle 3:2 (= 150 % Gewinn) und in ${pct(pBj, 1)} einen Push (= 0 % Gewinn). Im Schnitt ergibt das ${pct((1 - pBj) * 1.5, 1)} Gewinn auf deinen Einsatz – Even Money garantiert nur 100 %. Ablehnen ist besser.`,
     )
   } else {
     why.push('Insurance ist eine Nebenwette über den halben Einsatz, dass die verdeckte Karte eine 10 ist (Dealer-Blackjack). Sie zahlt 2:1.')
     why.push(
       `Fair wäre das bei einer Chance von 1/3 (33,3 %). Im 6-Deck-Schuh sind aber nur 96 von 311 unbekannten Karten Zehnerwerte – das sind ${pct(pBj, 1)}.`,
     )
-    why.push(`Die Wette verliert deshalb im Schnitt ${pct(-evInsurance, 1)} ihres Einsatzes (${fmtEv(evInsurance)} pro Einheit). Mal geht sie auf, langfristig bleibt immer ein Minus.`)
+    why.push(`Die Wette verliert deshalb im Schnitt ${pct(-evInsurance, 1)} ihres Einsatzes. Mal geht sie auf, langfristig bleibt immer ein Minus.`)
   }
   if (!e.correct) notes.push('Auch wenn der Dealer tatsächlich Blackjack hat: Entscheidend ist der Durchschnitt über viele Hände, nicht dieses eine Ergebnis.')
 

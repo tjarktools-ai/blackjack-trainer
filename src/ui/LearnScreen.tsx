@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { CellRef } from '../engine/types'
-import { upLabel } from '../explain/format'
+import { pct, upLabel } from '../explain/format'
 import { PRINCIPLE_ORDER, PRINCIPLES } from '../explain/principles'
 import { DEALER_STATS } from '../data/evData.generated'
 import { DEALER_COLS } from '../engine/strategyTables'
@@ -21,12 +21,12 @@ function DealerTable() {
         {DEALER_COLS.map((d) => {
           const bust = DEALER_STATS[d].bust
           return (
-            <div className="bar-row" key={d} style={{ gridTemplateColumns: '60px 1fr 46px' }}>
+            <div className="bar-row" key={d} style={{ gridTemplateColumns: '60px 1fr 56px' }}>
               <span>Dealer {upLabel(d)}</span>
               <span className="bar">
                 <i style={{ width: `${bust * 100 * 2}%` }} />
               </span>
-              <b>{Math.round(bust * 100)} %</b>
+              <b>{pct(bust)}</b>
             </div>
           )
         })}

@@ -1,4 +1,4 @@
-import type { CellRef } from '../engine/types'
+﻿import type { CellRef } from '../engine/types'
 
 /**
  * Die Kernideen hinter der Basic Strategy. Jedes Feld der Tabelle verweist auf eines
@@ -51,8 +51,8 @@ export const PRINCIPLES: Record<PrincipleId, Principle> = {
     rule: 'Dealer-Karten 2–6 sind schwach (er bustet oft), 7 bis Ass sind stark. Deine Hand spielst du immer gegen diese eine Karte.',
     body: [
       'Der Dealer hat keine Wahl: Er muss ziehen, bis er mindestens 17 hat (hier zieht er sogar auf Soft 17). Genau das macht ihn angreifbar.',
-      'Zeigt er eine 2 bis 6, steht er – wenn man die verdeckte Karte als Zehner annimmt (die häufigste Karte) – auf 12 bis 16. Er MUSS ziehen und bustet dabei in 36–44 % der Fälle.',
-      'Zeigt er 7, 8, 9, 10 oder Ass, hat er schon fast fertig oder liegt weit vorn. Dann bustet er nur noch in 20–26 % der Fälle.',
+      'Zeigt er eine 2 bis 6, steht er – wenn man die verdeckte Karte als Zehner annimmt (die häufigste Karte) – auf 12 bis 16. Er MUSS ziehen und bustet dabei in 35,7–43,9 % der Fälle.',
+      'Zeigt er 7, 8, 9, 10 oder Ass, hat er schon fast fertig oder liegt weit vorn. Dann bustet er nur noch in 20,1–26,2 % der Fälle.',
       'Fast jede Entscheidung der Tabelle folgt aus dieser einen Frage: Wie wahrscheinlich ist es, dass der Dealer busted?',
     ],
     quiz: {
@@ -70,8 +70,8 @@ export const PRINCIPLES: Record<PrincipleId, Principle> = {
     title: 'Gegen schwache Karten stehen (Hard 13–16 gegen 2–6)',
     rule: 'Hast du 13–16 und der Dealer zeigt 2–6: Stand. Du musst nichts riskieren – der Dealer muss ziehen und bustet oft.',
     body: [
-      'Mit Hard 13–16 bist du in einer schlechten Hand. Ziehst du, bustest du oft selbst (rund 38 % bei 13, 46 % bei 14, 54 % bei 15 und 62 % bei 16).',
-      'Gegen eine schwache Dealer-Karte musst du das nicht tun: Der Dealer steht unter Zugzwang und bustet in rund 36–44 % der Fälle. Du gewinnst, indem du einfach nichts tust.',
+      'Mit Hard 13–16 bist du in einer schlechten Hand. Ziehst du, bustest du oft selbst (38,5 % bei 13, 46,2 % bei 14, 53,8 % bei 15 und 61,5 % bei 16).',
+      'Gegen eine schwache Dealer-Karte musst du das nicht tun: Der Dealer steht unter Zugzwang und bustet in 35,7–43,9 % der Fälle. Du gewinnst, indem du einfach nichts tust.',
       'Faustregel: „Lass den Dealer den Fehler machen.“ Der Dealer-Bust ist dein Gewinn.',
     ],
     quiz: {
@@ -89,7 +89,7 @@ export const PRINCIPLES: Record<PrincipleId, Principle> = {
     title: 'Gegen starke Karten ziehen (Hard 12–16 gegen 7–Ass)',
     rule: 'Gegen 7 bis Ass verlierst du mit 12–16 beim Stehen meistens. Hit bustet oft, verliert aber im Schnitt weniger als Stehen.',
     body: [
-      'Gegen 7, 8, 9, 10 oder Ass kommt der Dealer sehr oft auf 17 oder mehr. Mit 12–16 gewinnst du beim Stehen nur, wenn er busted – und das passiert hier nur in 20–26 % der Fälle.',
+      'Gegen 7, 8, 9, 10 oder Ass kommt der Dealer sehr oft auf 17 oder mehr. Mit 12–16 gewinnst du beim Stehen nur, wenn er busted – und das passiert hier nur in 20,1–26,2 % der Fälle.',
       'Ziehst du, bustest du zwar häufig, aber du bekommst auch die Chance auf eine konkurrenzfähige Hand (17–21). Im Durchschnitt verlierst du dadurch weniger Geld als durch Stehen.',
       'Wichtig: Beide Optionen sind negativ. Es geht nicht darum zu gewinnen, sondern den Verlust klein zu halten.',
     ],
@@ -108,9 +108,9 @@ export const PRINCIPLES: Record<PrincipleId, Principle> = {
     title: 'Die 12 ist der Grenzfall',
     rule: 'Hard 12: Hit gegen 2 und 3, Stand gegen 4–6, Hit gegen 7–Ass.',
     body: [
-      'Mit 12 bustet ein Hit nur bei einer 10 (rund 31 %) – das ist das geringste Bust-Risiko aller Stiff-Hände. Deshalb ist die 12 die einzige, bei der man gegen eine schwache Karte noch zieht.',
-      'Gegen 2 und 3 bustet der Dealer „nur“ in rund 36–38 % der Fälle. Das reicht nicht aus, um mit der 12 zu stehen.',
-      'Ab einer Dealer-4 (und 5, 6) steigt der Dealer-Bust auf 40–44 % – jetzt ist Stehen besser.',
+      'Mit 12 bustet ein Hit nur bei einer 10 (30,8 %) – das ist das geringste Bust-Risiko aller Stiff-Hände. Deshalb ist die 12 die einzige, bei der man gegen eine schwache Karte noch zieht.',
+      'Gegen 2 und 3 bustet der Dealer „nur“ in 35,7 % (gegen 2) bzw. 37,7 % (gegen 3) der Fälle. Das reicht nicht aus, um mit der 12 zu stehen.',
+      'Ab einer Dealer-4 (und 5, 6) steigt der Dealer-Bust auf 39,9–43,9 % – jetzt ist Stehen besser.',
     ],
     quiz: {
       question: 'Warum ziehst du mit Hard 12 gegen eine Dealer-3, stehst aber gegen eine 4?',
@@ -127,7 +127,7 @@ export const PRINCIPLES: Record<PrincipleId, Principle> = {
     title: 'Ab 17: stehen',
     rule: 'Mit Hard 17 oder mehr bleibst du stehen. Fast jede Karte würde dich busten oder die Hand kaum verbessern.',
     body: [
-      'Mit 17 bustet jede Karte ab der 5 – nur Ass, 2, 3 und 4 sind sicher. Ein Hit würde dich in rund 69 % der Fälle sofort busten.',
+      'Mit 17 bustet jede Karte ab der 5 – nur Ass, 2, 3 und 4 sind sicher. Ein Hit würde dich in 69,2 % der Fälle sofort busten.',
       'Selbst die beste Karte (eine 4) bringt dich nur auf 21 – das passiert selten, die Busts sind viel häufiger.',
     ],
     quiz: {
@@ -163,7 +163,7 @@ export const PRINCIPLES: Record<PrincipleId, Principle> = {
     title: 'Verdoppeln, wenn du der Favorit bist (Hard 9–11)',
     rule: 'Double mit 11, 10 und 9, wenn der Dealer nicht zu stark ist: Die nächste Karte (oft eine 10) macht dich zum Favoriten – dann setzt du mehr ein.',
     body: [
-      'Mit Hard 11 ist die nächste Karte in rund 31 % eine 10 → 21. Mit 10 landet jede 10 auf 20, mit 9 auf 19. Das sind sehr starke Hände.',
+      'Mit Hard 11 ist die nächste Karte in 30,8 % eine 10 → 21. Mit 10 landet jede 10 auf 20, mit 9 auf 19. Das sind sehr starke Hände.',
       'Weil du in diesen Situationen im Schnitt vorn liegst, verdoppelst du den Einsatz: Du holst mehr Geld aus einer guten Ausgangslage.',
       'Die Grenzen: Gegen starke Dealer-Karten (10, Ass bei 10; 7–A bei 9) und die 2 bei 9 ist dein Vorteil zu klein – dort ist ein normaler Hit besser, weil das doppelte Risiko nicht belohnt wird.',
       'Hinweis: Gegen das Ass doppelst du die 11 nur, weil der Dealer hier auf Soft 17 zieht (H17). Das schwächt ihn leicht.',
@@ -315,8 +315,8 @@ export const PRINCIPLES: Record<PrincipleId, Principle> = {
     title: 'Aufgeben (Late Surrender)',
     rule: 'Aufgeben kostet sicher 50 %. Du gibst nur auf, wenn jede andere Spielweise im Schnitt mehr als 50 % kostet: 16 gegen 9, 10, Ass und 15 gegen 10.',
     body: [
-      'Surrender gibt dir den halben Einsatz zurück: Das Ergebnis ist immer genau −0,5.',
-      'Das lohnt sich nur, wenn Hit und Stand beide schlechter als −0,5 sind. Das ist bei Hard 16 gegen 9, 10 und Ass sowie Hard 15 gegen 10 der Fall.',
+      'Surrender gibt dir den halben Einsatz zurück: Das Ergebnis ist immer genau −50 % des Einsatzes.',
+      'Das lohnt sich nur, wenn Hit und Stand beide schlechter als −50 % sind. Das ist bei Hard 16 gegen 9, 10 und Ass sowie Hard 15 gegen 10 der Fall.',
       'Transparenz: In H17-Spielen wäre Aufgeben zusätzlich bei Hard 15 und 17 gegen Ass sowie bei 8,8 gegen Ass rechnerisch minimal besser (rund 1 %). Deine Tabelle lässt das weg – die App folgt der Tabelle und weist bei diesen Feldern darauf hin.',
       'Late Surrender geht nur als allererste Entscheidung (nach dem Dealer-Peek, vor jedem Hit oder Double) – nach einer Karte oder einem Split nicht mehr.',
     ],
@@ -333,15 +333,15 @@ export const PRINCIPLES: Record<PrincipleId, Principle> = {
   insurance: {
     id: 'insurance',
     title: 'Insurance und Even Money: nie',
-    rule: 'Insurance zahlt 2:1, lohnt sich aber nur, wenn der Dealer in mehr als einem Drittel der Fälle Blackjack hat. Es sind nur rund 31 %.',
+    rule: 'Insurance zahlt 2:1, lohnt sich aber nur, wenn der Dealer in mehr als einem Drittel der Fälle Blackjack hat. Es sind nur 30,9 %.',
     body: [
       'Insurance ist eine Nebenwette, dass die verdeckte Karte eine 10 ist (Dealer-Blackjack). Sie zahlt 2:1.',
-      'Fair wäre das bei einer Chance von 1/3 (33,3 %). Im 6-Deck-Schuh sind aber nur 96 von 311 unbekannten Karten Zehnerwerte: rund 30,9 %. Die Wette verliert im Schnitt 7,4 % ihres Einsatzes.',
-      'Even Money (Insurance, wenn du selbst Blackjack hast) ist dieselbe Wette: Du tauschst die 3:2 gegen sichere 1:1. In rund 69 % der Fälle bekommst du 3:2 – das ist mehr wert als die sichere 1:1.',
+      'Fair wäre das bei einer Chance von 1/3 (33,3 %). Im 6-Deck-Schuh sind aber nur 96 von 311 unbekannten Karten Zehnerwerte: 30,9 %. Die Wette verliert im Schnitt 7,4 % ihres Einsatzes.',
+      'Even Money (Insurance, wenn du selbst Blackjack hast) ist dieselbe Wette: Du tauschst die 3:2 gegen sichere 1:1. In 69,1 % der Fälle bekommst du 3:2 – das ist mehr wert als die sichere 1:1.',
     ],
     quiz: {
       question: 'Warum nimmst du keine Insurance, auch nicht mit starker Hand?',
-      right: 'Weil die Chance auf einen Dealer-Blackjack (≈ 31 %) kleiner ist als die 33,3 %, die für 2:1 nötig wären.',
+      right: 'Weil die Chance auf einen Dealer-Blackjack (30,9 %) kleiner ist als die 33,3 %, die für 2:1 nötig wären.',
       wrong: [
         'Weil man Insurance nur mit einem Blackjack nehmen darf.',
         'Weil der Dealer mit einem Ass nie einen Blackjack hat.',

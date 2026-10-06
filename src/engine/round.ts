@@ -141,7 +141,8 @@ export class Game {
     if (bet <= 0 || bet > this.balance) return false
 
     this.shuffled = false
-    if (this.shoe.needsShuffle) {
+    // Cut Card erreicht – oder (nur Übungsmodi) die gewünschten Karten sind im Rest des Schuhs aufgebraucht.
+    if (this.shoe.needsShuffle || (forced && !this.shoe.canSupply([...forced.player, forced.dealerUp]))) {
       this.shoe.reshuffle()
       this.shuffled = true
     }

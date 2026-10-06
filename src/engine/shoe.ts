@@ -84,6 +84,22 @@ export class Shoe {
     return this.consumed / this.size
   }
 
+  /** Prüft, ob der Rest des Schuhs für alle Kartengruppen (z. B. [Ass], [8], [T,J,Q,K]) je eine Karte hergibt. */
+  canSupply(groups: readonly (readonly string[])[]): boolean {
+    const counts: Record<string, number> = {}
+    for (let i = this.index; i < this.cards.length; i++) {
+      const r = this.cards[i].rank
+      counts[r] = (counts[r] ?? 0) + 1
+    }
+    for (const group of groups) {
+      let best: string | null = null
+      for (const r of group) if ((counts[r] ?? 0) > 0 && (best === null || counts[r] > counts[best])) best = r
+      if (best === null) return false
+      counts[best]--
+    }
+    return true
+  }
+
   /**
    * Nimmt gezielt eine Karte mit dem gewünschten Rang aus dem Rest des Schuhs.
    * Nur für den optionalen „Lern-Deal“. Gibt null zurück, wenn keine mehr da ist.

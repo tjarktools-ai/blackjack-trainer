@@ -192,7 +192,7 @@ export const useGame = create<GameStore>((set, get) => {
       if (snap.phase !== 'betting' && snap.phase !== 'settled') return
       if (bet < MIN_BET || bet > game.balance) return
       const settings = useSettings.getState()
-      const forced = settings.learnDeal ? pickLearningDeal(useStats.getState().cells) : undefined
+      const forced = settings.dealMode !== 'realistic' ? pickLearningDeal(useStats.getState().cells, settings.dealMode) : undefined
       settledRecorded = false
       if (!game.deal(bet, forced)) return
       for (let i = 0; i < 4; i++) setTimeout(() => sound('card'), i * 160)

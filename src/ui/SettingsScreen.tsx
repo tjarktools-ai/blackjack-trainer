@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { START_BALANCE } from '../engine/rules'
 import { useGame } from '../state/gameStore'
-import { useSettings, type QuizFrequency } from '../state/settingsStore'
+import { useSettings, type DealMode, type QuizFrequency } from '../state/settingsStore'
 import { useStats } from '../state/statsStore'
 import { fmtMoney } from './cardUtils'
 
@@ -18,7 +18,7 @@ function Toggle({ on, onChange, label, hint }: { on: boolean; onChange: (v: bool
 }
 
 export function SettingsScreen() {
-  const { sound, learnDeal, quiz, set } = useSettings()
+  const { sound, dealMode, quiz, set } = useSettings()
   const newBankroll = useGame((s) => s.newBankroll)
   const exportJson = useStats((s) => s.exportJson)
   const importJson = useStats((s) => s.importJson)
@@ -49,12 +49,21 @@ export function SettingsScreen() {
 
         <div className="card-panel">
           <Toggle on={sound} onChange={(v) => set('sound', v)} label="Sound" hint="Chips, Karten und Richtig/Falsch-Töne." />
-          <Toggle
-            on={learnDeal}
-            onChange={(v) => set('learnDeal', v)}
-            label="Lern-Deal"
-            hint="Verteilt gezielt Hände aus Tabellenfeldern, die du noch nicht sicher kannst. Nicht realistisch, aber du lernst schneller."
-          />
+          <div className="toggle-row" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
+            <div className="t">
+              <b>Austeil-Modus</b>
+              <small>
+                Realistisch = Karten wie am echten Tisch. Lern-Deal = bevorzugt Felder, die du noch nicht sicher kannst. Schwer = nur knappe, schwierige Entscheidungen (z. B. Soft 18 gegen 2, 12 gegen 4, 16 gegen 10). Lern-Deal und Schwer sind bewusst nicht realistisch, dafür lernst du schneller.
+              </small>
+            </div>
+            <div className="seg" style={{ marginTop: 8 }}>
+              {([['realistic', 'Realistisch'], ['learn', 'Lern-Deal'], ['hard', 'Schwer']] as [DealMode, string][]).map(([v, l]) => (
+                <button key={v} className={dealMode === v ? 'on' : ''} onClick={() => set('dealMode', v)}>
+                  {l}
+                </button>
+              ))}
+            </div>
+          </div>
           <div className="toggle-row" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
             <div className="t">
               <b>„Warum?“-Quiz</b>

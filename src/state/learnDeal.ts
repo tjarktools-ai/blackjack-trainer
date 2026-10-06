@@ -1,4 +1,5 @@
 import { ALL_CELLS } from '../engine/cells'
+import { HARD_CELLS } from '../engine/difficulty'
 import type { ForcedDeal } from '../engine/round'
 import { randomInt } from '../engine/shoe'
 import { cellKey, type CellRef, type Rank, type Upcard } from '../engine/types'
@@ -37,13 +38,18 @@ function combosFor(cell: CellRef): [string, string][] {
 }
 
 const WEIGHT: Record<CellStatus, number> = { weak: 5, unseen: 3, learning: 2, mastered: 0.3 }
+/** Im Schwer-Modus tauchen auch gemeisterte Felder weiter auf (sie sollen ja sitzen bleiben). */
+const WEIGHT_HARD: Record<CellStatus, number> = { weak: 3, unseen: 2, learning: 2, mastered: 1 }
 
 /**
  * Wählt ein Tabellenfeld gewichtet nach Lernbedarf und baut daraus eine Starthand.
+ * mode 'hard': nur aus den schwierigen Feldern (knappe Entscheidungen).
  * Gilt nur für Felder, die bei der ersten Austeilung auftreten können.
  */
-export function pickLearningDeal(cells: Record<string, CellStat>): ForcedDeal | undefined {
-  const pool = ALL_CELLS.map((c) => ({ c, w: WEIGHT[cellStatus(cells[cellKey(c)])] }))
+export function pickLearningDeal(cells: Record<string, CellStat>, mode: 'learn' | 'hard' = 'learn'): ForcedDeal | undefined {
+  const source = mode === 'hard' ? HARD_CELLS : ALL_CELLS
+  const weights = mode === 'hard' ? WEIGHT_HARD : WEIGHT
+  const pool = source.map((c) => ({ c, w: weights[cellStatus(cells[cellKey(c)])] }))
   const total = pool.reduce((a, b) => a + b.w, 0)
   let x = (randomInt(1_000_000) / 1_000_000) * total
   let chosen = pool[0].c

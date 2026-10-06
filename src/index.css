@@ -405,6 +405,25 @@ p {
   text-align: center;
 }
 
+.mode-switch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  max-width: 330px;
+}
+
+.mode-switch .seg {
+  width: 100%;
+}
+
+.mode-switch .seg button {
+  padding: 6px 4px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
 .status-line {
   color: var(--muted);
   font-size: 13px;
@@ -842,7 +861,7 @@ p {
 
 .ev-row {
   display: grid;
-  grid-template-columns: 112px 1fr 58px;
+  grid-template-columns: 112px 1fr 76px;
   align-items: center;
   gap: 8px;
   font-size: 13.5px;
