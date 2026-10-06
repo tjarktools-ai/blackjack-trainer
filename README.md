@@ -21,6 +21,10 @@ Mobile-first PWA: Du spielst Blackjack mit Spielgeld wie an einem echten Tisch u
   (bevorzugt Felder, die du noch nicht sicher kannst) und **Schwer** (nur knappe Entscheidungen, z. B. Soft 18
   gegen 2, 12 gegen 4, 16 gegen 10 – ein Feld gilt als schwer, wenn der Tabellenzug weniger als 8 % des Einsatzes
   besser ist als die beste Alternative; aktuell 83 von 284 Feldern).
+- **Spaß-Modus** (eigener Tab): 100 % realistischer Tisch ohne Lern-Deal, frei wählbares Budget (10 bis 1.000.000),
+  nie unterbrochen – nach jedem Zug blendet eine kleine Leiste in 1–2 Sätzen ein, ob der Zug richtig war und warum
+  (abschaltbar). Eigene Session mit Auswertung (Ergebnis, Höchst-/Tiefststand, Anteil optimaler Züge); zählt nicht
+  für den Lernfortschritt.
 - Alle Wahrscheinlichkeiten und Durchschnittsergebnisse werden als Prozent angezeigt (z. B. 33,3 %).
 - **PWA:** installierbar, läuft offline, Daten bleiben lokal (Backup per Export/Import).
 

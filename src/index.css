@@ -146,7 +146,7 @@ p {
 .nav {
   flex: none;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   background: var(--bg-2);
   border-top: 1px solid var(--line);
   padding-bottom: var(--safe-bottom);
@@ -422,6 +422,130 @@ p {
   padding: 6px 4px;
   font-size: 13px;
   white-space: nowrap;
+}
+
+.fun-bar {
+  flex: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr 0.8fr 0.9fr auto;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+}
+
+.fun-bar small {
+  display: block;
+  color: var(--muted);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.fun-bar b {
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+}
+
+.fun-bar b.plus {
+  color: var(--green);
+}
+
+.fun-bar b.minus {
+  color: var(--red);
+}
+
+.fun-hint {
+  flex: none;
+  min-height: 66px;
+  display: flex;
+  align-items: center;
+  padding: 8px 14px;
+  background: var(--bg-2);
+  border-top: 1px solid var(--line);
+  border-left: 4px solid var(--line);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.fun-hint.ok {
+  border-left-color: var(--green);
+}
+
+.fun-hint.bad {
+  border-left-color: var(--red);
+}
+
+.fun-hint-in {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  animation: fade 0.25s ease both;
+}
+
+.fun-hint-in b {
+  font-size: 13.5px;
+}
+
+.fun-hint.ok b {
+  color: var(--green);
+}
+
+.fun-hint.bad b {
+  color: var(--red);
+}
+
+.fun-hint-in span {
+  color: var(--muted);
+}
+
+.fun-hint .muted {
+  color: var(--muted);
+}
+
+.budget-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.pill-btn {
+  padding: 12px 6px;
+  border-radius: 12px;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  font-weight: 800;
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+}
+
+.pill-btn.on {
+  background: var(--green);
+  color: #04210a;
+  border-color: var(--green);
+}
+
+.field-label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.field-input {
+  background: var(--bg-2);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+}
+
+.field-input:focus {
+  outline: 2px solid var(--green-2);
 }
 
 .status-line {

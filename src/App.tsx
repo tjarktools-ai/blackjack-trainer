@@ -1,15 +1,27 @@
 import { useState } from 'react'
 import { FeedbackSheet } from './ui/FeedbackSheet'
+import { FunScreen } from './ui/FunScreen'
 import { fmtMoney } from './ui/cardUtils'
 import { GameScreen } from './ui/GameScreen'
 import { LearnScreen } from './ui/LearnScreen'
 import { ProgressScreen } from './ui/ProgressScreen'
 import { SettingsScreen } from './ui/SettingsScreen'
+import { useFun } from './state/funStore'
 import { useGame } from './state/gameStore'
 
-type Tab = 'play' | 'learn' | 'progress' | 'settings'
+type Tab = 'play' | 'fun' | 'learn' | 'progress' | 'settings'
 
 const ICONS: Record<Tab, React.ReactNode> = {
+  fun: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3.5" y="3.5" width="17" height="17" rx="4" />
+      <circle cx="8.5" cy="8.5" r="1.2" fill="currentColor" stroke="none" />
+      <circle cx="15.5" cy="8.5" r="1.2" fill="currentColor" stroke="none" />
+      <circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none" />
+      <circle cx="8.5" cy="15.5" r="1.2" fill="currentColor" stroke="none" />
+      <circle cx="15.5" cy="15.5" r="1.2" fill="currentColor" stroke="none" />
+    </svg>
+  ),
   play: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <rect x="4" y="3" width="11" height="16" rx="2" />
@@ -38,11 +50,16 @@ const ICONS: Record<Tab, React.ReactNode> = {
   ),
 }
 
-const LABEL: Record<Tab, string> = { play: 'Spielen', learn: 'Lernen', progress: 'Fortschritt', settings: 'Einstellungen' }
+const LABEL: Record<Tab, string> = { play: 'Training', fun: 'Spaß', learn: 'Lernen', progress: 'Fortschritt', settings: 'Optionen' }
+const ORDER: Tab[] = ['play', 'fun', 'learn', 'progress', 'settings']
 
 export default function App() {
   const [tab, setTab] = useState<Tab>('play')
-  const balance = useGame((s) => s.snap.balance)
+  const trainerBalance = useGame((s) => s.snap.balance)
+  const funBalance = useFun((s) => s.snap.balance)
+  const funPhase = useFun((s) => s.phase)
+  const onFun = tab === 'fun'
+  const balance = onFun ? funBalance : trainerBalance
   const toast = useGame((s) => s.toast)
 
   return (
@@ -53,22 +70,23 @@ export default function App() {
           BJ Trainer
         </div>
         <div className="balance">
-          <small>Spielgeld</small>
-          <b>{fmtMoney(balance)}</b>
+          <small>{onFun ? 'Budget' : 'Spielgeld'}</small>
+          <b>{onFun && funPhase !== 'play' ? '–' : fmtMoney(balance)}</b>
         </div>
       </header>
 
       {toast && <div className="toast">{toast}</div>}
 
       {tab === 'play' && <GameScreen />}
+      {tab === 'fun' && <FunScreen />}
       {tab === 'learn' && <LearnScreen />}
       {tab === 'progress' && <ProgressScreen />}
       {tab === 'settings' && <SettingsScreen />}
 
-      <FeedbackSheet />
+      {tab === 'play' && <FeedbackSheet />}
 
       <nav className="nav" aria-label="Hauptnavigation">
-        {(Object.keys(ICONS) as Tab[]).map((t) => (
+        {ORDER.map((t) => (
           <button key={t} className={tab === t ? 'active' : ''} onClick={() => setTab(t)} aria-current={tab === t ? 'page' : undefined}>
             {ICONS[t]}
             {LABEL[t]}

@@ -109,6 +109,11 @@ export const useGame = create<GameStore>((set, get) => {
     useStats.getState().recordRound(net, game.balance)
     sound(net > 0 ? 'win' : net < 0 ? 'lose' : 'chip')
     persist(game.balance, get().lastBet)
+    // Einsatz ans Restguthaben anpassen (sonst bleibt ein nicht mehr setzbarer Betrag stehen)
+    if (get().bet > game.balance) {
+      betStack.length = 0
+      set({ bet: game.balance >= MIN_BET ? Math.floor(game.balance) : 0 })
+    }
     refresh()
   }
 

@@ -49,6 +49,8 @@ export interface PlayExplanation {
   principle: PrincipleId
   secondary: PrincipleId[]
   dealer: DealerInfo
+  /** Kennzahlen der Hand (für Kurz-Hinweise). */
+  facts: { total: number; soft: boolean; hitBust: number; row: string }
 }
 
 export interface InsuranceExplanation {
@@ -220,6 +222,7 @@ export function explainPlay(e: PlayEvaluation): PlayExplanation {
     principle,
     secondary,
     dealer: stats,
+    facts: { total: rec.total, soft: rec.soft, hitBust: ctx.hitBust, row: rec.cell.row },
   }
 }
 
