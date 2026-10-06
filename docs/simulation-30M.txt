@@ -1,0 +1,9 @@
+﻿Simulation: Basic Strategy (1:1 Tabelle) gegen die echte Spiel-Engine
+Regeln: 6 Decks, H17, DAS, Late Surrender (nur Tabellenfelder), 3:2, Peek, Resplit bis 4, Asse 1 Karte
+Aufruf: npm run simulate -- 30000000
+
+
+Runden: 30.000.000 in 352.8 s
+Hausvorteil: 0.562 %  (± 0.041 %, 95 %-Intervall)
+Blackjack-Rate: 4.53 %  (gezählt nur, wenn der Dealer keinen Blackjack hat; Gesamtrate ≈ 4,75 %, Rest = Push)
+Abweichungen vom empfohlenen Zug: 0 (muss 0 sein)
